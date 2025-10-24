@@ -1,11 +1,12 @@
 from fastapi import FastAPI
+from models import User
 
 app = FastAPI()
 
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
+@app.get("/users")
+def get_users():
+    return User
 
 
 @app.get("/items/{item_id}")
