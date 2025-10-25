@@ -1,5 +1,5 @@
 import redis.asyncio as aioredis
-from core.settings import AppSettings
+from app.core.settings import AppSettings
 
 
 class RedisClient:

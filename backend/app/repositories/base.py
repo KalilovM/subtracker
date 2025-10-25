@@ -3,7 +3,7 @@ from collections.abc import Sequence
 from sqlalchemy import select, update, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db.base import BaseModel
+from app.db.base import BaseModel
 from uuid import UUID
 
 ModelType = TypeVar("ModelType", bound=BaseModel)

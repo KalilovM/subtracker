@@ -1,5 +1,5 @@
-from base import BaseRepository
-from models.user import User
+from .base import BaseRepository
+from backend.app.models.user_models import User
 from collections.abc import Sequence
 
 from sqlalchemy import select

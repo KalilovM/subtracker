@@ -6,8 +6,8 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import Enum as SAEnum
 
-from db.base import BaseModel
-from db.mixins import SoftDeleteMixin
+from app.db.base import BaseModel
+from app.db.mixins import SoftDeleteMixin
 
 
 class Role(PyEnum):
