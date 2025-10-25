@@ -1,7 +1,10 @@
 from datetime import datetime
 from typing import Any
+import uuid
+from sqlalchemy.dialects.postgresql import UUID
 
-from sqlalchemy import DateTime, Integer, MetaData, String, func
+
+from sqlalchemy import DateTime, MetaData, String, func
 from sqlalchemy.ext.asyncio import AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
 
@@ -37,7 +40,7 @@ class BaseModel(Base):
 
     __abstract__ = True
     # PK - standaard across all models
-    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
 
     # Audit timestamps - server-side defaults for reliability
     created_at: Mapped[datetime] = mapped_column(
