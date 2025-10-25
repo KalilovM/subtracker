@@ -1,4 +1,4 @@
-from app.settings import settings
+from backend.app.core.settings import settings
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
