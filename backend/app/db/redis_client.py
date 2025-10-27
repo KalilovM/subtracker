@@ -1,5 +1,5 @@
 import redis.asyncio as aioredis
-from app.core.settings import AppSettings
+from app.core.settings import settings
 
 
 class RedisClient:
@@ -7,11 +7,26 @@ class RedisClient:
 
     @classmethod
     async def get_client(cls) -> aioredis.Redis:
-        if not cls._instance:
+        if cls._instance is None:
+            # Create once
             cls._instance = aioredis.from_url(
-                AppSettings.REDIS.URL, encoding="utf8", decode_responses=True
+                settings.REDIS.URL,
+                encoding="utf-8",
+                decode_responses=True,
             )
-            return cls._instance
+            # Optionally verify connection
+            try:
+                await cls._instance.ping()
+            except Exception:
+                cls._instance = None
+                raise
+        return cls._instance
+
+    @classmethod
+    async def close(cls):
+        if cls._instance is not None:
+            await cls._instance.close()
+            cls._instance = None
 
 
 redis_client = RedisClient()

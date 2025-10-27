@@ -12,7 +12,6 @@ engine: AsyncEngine = create_async_engine(
     echo=settings.SQLALCHEMY_ECHO,
     pool_size=settings.DATABASE.POOL_SIZE,
     max_overflow=settings.DATABASE.MAX_OVERFLOW,
-    feature=True,
 )
 
 # Session factory

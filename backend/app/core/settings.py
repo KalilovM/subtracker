@@ -26,7 +26,7 @@ class AppSettings(BaseSettings):
     REDIS: RedisSettings
     SQLALCHEMY_ECHO: bool = False
 
-    model_config = SettingsConfigDict(env_nested_delimiter="_", env_file=".env")
+    model_config = SettingsConfigDict(env_nested_delimiter="__", env_file=".env")
 
 
 settings = AppSettings()

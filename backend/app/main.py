@@ -1,14 +1,25 @@
 from fastapi import FastAPI
-from backend.app.models.user_models import User
+from app.api.routes import auth_routes
+from app.db.database import engine
+from app.db.base import Base
 
-app = FastAPI()
-
-
-@app.get("/users")
-def get_users():
-    return User
+from contextlib import asynccontextmanager
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: str | None = None):
-    return {"item_id": item_id, "q": q}
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup logic
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
+    print("Database tables created.")
+
+    yield  # App runs here
+
+    # Shutdown logic (optional)
+    await engine.dispose()
+    print("Database connection closed.")
+
+
+app = FastAPI(lifespan=lifespan)
+
+app.include_router(auth_routes.router)
