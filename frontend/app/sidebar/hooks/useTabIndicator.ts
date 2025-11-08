@@ -1,71 +1,42 @@
 /**
  * Custom hook for managing animated tab indicator position
+ * Animates indicator from previous tab position to current tab position
  */
 
-import { useEffect, useState } from "react";
 import type { IndicatorStyle } from "../types/index";
-import { calculateTabTransform, lerp } from "../utils";
-import { TAB_INDICATOR_ANIMATION_DURATION } from "../constants/index";
 
 /**
  * Hook to manage animated tab indicator that follows the active tab
- * Uses transform-based animation for better performance
- * @param activeTabRef - Reference to the active tab's wrapper element
+ * Starts animation from previous tab position and animates to current tab position
+ * @param activeTabRef - Reference to the currently active tab's wrapper element
+ * @param prevTabRef - Reference to the previously active tab's wrapper element
  * @returns Current indicator transform values
  */
+const getTranslate3d = (
+	activeTabRef: React.RefObject<HTMLSpanElement | null>,
+	prevTabRef: React.RefObject<HTMLSpanElement | null>,
+): number => {
+	if (
+		activeTabRef.current &&
+		prevTabRef.current &&
+		activeTabRef !== prevTabRef
+	) {
+		const activeRect = activeTabRef.current.getBoundingClientRect();
+		const prevRect = prevTabRef.current.getBoundingClientRect();
+		const startTranslate3d = prevRect.top - activeRect.top;
+		return startTranslate3d;
+	}
+	return 0;
+};
+
 export const useTabIndicator = (
 	activeTabRef: React.RefObject<HTMLSpanElement | null>,
+	prevTabRef: React.RefObject<HTMLSpanElement | null>,
 ): IndicatorStyle => {
-	const [indicatorStyle, setIndicatorStyle] = useState<IndicatorStyle>({
-		scaleY: 0,
-		translateY: 0,
-	});
-	const [prevStyle, setPrevStyle] = useState<IndicatorStyle>({
-		scaleY: 0,
-		translateY: 0,
-	});
+	// Compute the value directly on every render - no state caching
+	const translate3d = getTranslate3d(activeTabRef, prevTabRef);
 
-	useEffect(() => {
-		// Get current tab transform values
-		const currTransform = calculateTabTransform(activeTabRef);
-
-		if (!currTransform) return; // nothing to do yet
-
-		// If no previous, start indicator at current tab instantly
-		if (prevStyle.scaleY === 0) {
-			setIndicatorStyle(currTransform);
-			setPrevStyle(currTransform);
-			return;
-		}
-
-		// Animate indicator from previous to current
-		let startTime: number | null = null;
-
-		/**
-		 * Animation frame callback for smooth indicator transition
-		 */
-		const animate = (time: number) => {
-			if (!startTime) startTime = time;
-			const elapsed = (time - startTime) / 1000;
-
-			if (elapsed >= TAB_INDICATOR_ANIMATION_DURATION) {
-				setIndicatorStyle(currTransform);
-				setPrevStyle(currTransform);
-				return;
-			}
-
-			const t = elapsed / TAB_INDICATOR_ANIMATION_DURATION;
-
-			setIndicatorStyle({
-				scaleY: lerp(prevStyle.scaleY, currTransform.scaleY, t),
-				translateY: lerp(prevStyle.translateY, currTransform.translateY, t),
-			});
-
-			requestAnimationFrame(animate);
-		};
-
-		requestAnimationFrame(animate);
-	}, [activeTabRef, prevStyle]);
-
-	return indicatorStyle;
+	return {
+		translate3d,
+	};
 };

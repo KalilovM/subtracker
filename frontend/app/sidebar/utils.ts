@@ -36,14 +36,12 @@ export const calculateTabTransform = (
 	const parentCenterY = parentRect.height / 2;
 
 	// Calculate scale for height (1.0 = full height)
-	const scaleY = elRect.height / 24; // 24 is the base height of a tab item
 
 	// Calculate translateY to move indicator to active tab
 	const translateY = centerY - parentCenterY;
 
 	return {
-		scaleY: scaleY,
-		translateY: translateY,
+		translate3d: translateY,
 	};
 };
 

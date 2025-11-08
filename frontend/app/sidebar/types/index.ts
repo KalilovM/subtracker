@@ -33,8 +33,7 @@ export type TabRefs = Record<string, React.RefObject<HTMLAnchorElement | null>>;
  * Uses scaleY for height and translateY for vertical position
  */
 export interface IndicatorStyle {
-	scaleY: number;
-	translateY: number;
+	translate3d: number;
 }
 
 /**

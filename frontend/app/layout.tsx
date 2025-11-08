@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Sidebar from "./Sidebar";
 import "./globals.css";
 
@@ -14,9 +14,9 @@ export default function RootLayout({
 	const previousPathRef = useRef<null | string>(null);
 	const pathname = usePathname();
 
-	// useEffect(() => {
-	// 	previousPathRef.current = pathname;
-	// }, [pathname]);
+	useEffect(() => {
+		previousPathRef.current = pathname;
+	}, [pathname]);
 
 	return (
 		<html lang="en">

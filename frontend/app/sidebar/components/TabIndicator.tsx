@@ -20,8 +20,9 @@ export function TabIndicator({ style }: TabIndicatorProps) {
 	return (
 		<motion.span
 			className="absolute inset-y-2 -left-4 w-0.5 rounded-full bg-zinc-950 dark:bg-white"
+			initial={{ transform: `translate3d(0, ${style.translate3d}px, 0)` }}
+			animate={{ transform: `translate3d(0, 0, 0)` }}
 			style={{
-				transform: `scaleY(${style.scaleY}) translateY(${style.translateY}px)`,
 				transformOrigin: "50% 50% 0px",
 			}}
 			transition={{

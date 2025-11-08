@@ -37,7 +37,9 @@ export const TabItem = ({
 			>
 				<HomeIcon
 					className={`size-6 shrink-0 sm:size-5 ${
-						isActive ? "fill-zinc-950 dark:fill-white" : "fill-zinc-500 dark:fill-zinc-400"
+						isActive
+							? "fill-zinc-950 dark:fill-white"
+							: "fill-zinc-500 dark:fill-zinc-400"
 					}`}
 				/>
 				<span className="truncate">{tab.label}</span>
